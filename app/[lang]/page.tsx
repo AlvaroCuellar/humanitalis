@@ -5,7 +5,7 @@ import { Hero } from "@/components/Hero";
 import { About, Capabilities, ContactCTA, FeaturedProject, Methodology, Principles, Team } from "@/components/Sections";
 import { Footer } from "@/components/Footer";
 import { dictionaries } from "@/content/dictionaries";
-import { isLang, siteConfig, type Lang } from "@/lib/config";
+import { featureFlags, isLang, siteConfig, type Lang } from "@/lib/config";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang: rawLang } = await params;
@@ -26,5 +26,5 @@ export default async function LanguageHome({ params }: { params: Promise<{ lang:
   const lang: Lang = rawLang;
   const d = dictionaries[lang];
   const jsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "HUMANITALIS", url: `${siteConfig.siteUrl}/${lang}`, description: d.descriptor, founder: { "@type": "Person", name: siteConfig.founder, url: siteConfig.founderUrl }, areaServed: "International", knowsAbout: ["Artificial intelligence", "Cultural heritage", "Digital humanities", "Handwritten text recognition", "Computational text analysis"] };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} /><Header lang={lang} dictionary={d} /><main><Hero lang={lang} dictionary={d} /><Capabilities dictionary={d} /><Methodology dictionary={d} /><FeaturedProject dictionary={d} /><About dictionary={d} /><Team dictionary={d} /><Principles dictionary={d} /><ContactCTA dictionary={d} /></main><Footer lang={lang} dictionary={d} /></>;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} /><Header lang={lang} nav={d.nav} /><main><Hero lang={lang} dictionary={d} /><Capabilities dictionary={d} /><Methodology dictionary={d} />{featureFlags.featuredProject && <FeaturedProject dictionary={d} />}<About dictionary={d} /><Team dictionary={d} /><Principles dictionary={d} /><ContactCTA dictionary={d} /></main><Footer lang={lang} dictionary={d} /></>;
 }

@@ -5,9 +5,9 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { Dictionary } from "@/content/dictionaries";
-import type { Lang } from "@/lib/config";
+import { featureFlags, type Lang } from "@/lib/config";
 
-export function Header({ lang, dictionary: d }: { lang: Lang; dictionary: Dictionary }) {
+export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -29,8 +29,9 @@ export function Header({ lang, dictionary: d }: { lang: Lang; dictionary: Dictio
     };
   }, [open]);
   const links = [
-    ["capabilities", d.nav.capabilities], ["methodology", d.nav.methodology],
-    ["project", d.nav.project], ["about", d.nav.about], ["team", d.nav.team],
+    ["capabilities", nav.capabilities], ["methodology", nav.methodology],
+    ...(featureFlags.featuredProject ? [["project", nav.project]] : []),
+    ["about", nav.about], ["team", nav.team],
   ];
   function returnToTop(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -41,13 +42,13 @@ export function Header({ lang, dictionary: d }: { lang: Lang; dictionary: Dictio
   return (
     <header className={`site-header ${open ? "menu-open" : ""}`}>
       <div className="container header-inner">
-        <Link href={`/${lang}#home`} className="brand-link" aria-label={`${d.nav.home} — HUMANITALIS`} onClick={returnToTop}>
+        <Link href={`/${lang}#home`} className="brand-link" aria-label={`${nav.home} — HUMANITALIS`} onClick={returnToTop}>
           <Logo lang={lang} className="header-logo" />
         </Link>
         <nav id="main-navigation" className={`main-nav ${open ? "is-open" : ""}`} aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}>
           <div className="mobile-nav-top">
             <Logo variant="mark" className="mobile-mark" />
-            <button ref={closeButtonRef} type="button" className="menu-close" onClick={() => setOpen(false)} aria-label={d.nav.close}>
+            <button ref={closeButtonRef} type="button" className="menu-close" onClick={() => setOpen(false)} aria-label={nav.close}>
               <span /><span />
             </button>
           </div>
@@ -55,12 +56,12 @@ export function Header({ lang, dictionary: d }: { lang: Lang; dictionary: Dictio
             {links.map(([id, label]) => <Link key={id} href={`/${lang}#${id}`} onClick={() => setOpen(false)}>{label}</Link>)}
           </div>
           <LanguageSwitcher lang={lang} className="mobile-language" onNavigate={() => setOpen(false)} />
-          <Link className="button button-small nav-contact" href={`/${lang}#contact`} onClick={() => setOpen(false)}>{d.nav.contact}</Link>
+          <Link className="button button-small nav-contact" href={`/${lang}#contact`} onClick={() => setOpen(false)}>{nav.contact}</Link>
         </nav>
         <div className="header-actions">
           <LanguageSwitcher lang={lang} />
-          <Link className="button button-small" href={`/${lang}#contact`}>{d.nav.contact}</Link>
-          <button ref={menuButtonRef} type="button" className="menu-toggle" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="main-navigation" aria-label={d.nav.menu}>
+          <Link className="button button-small" href={`/${lang}#contact`}>{nav.contact}</Link>
+          <button ref={menuButtonRef} type="button" className="menu-toggle" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="main-navigation" aria-label={nav.menu}>
             <span /><span />
           </button>
         </div>

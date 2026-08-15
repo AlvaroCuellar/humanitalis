@@ -7,6 +7,10 @@ export const siteConfig = {
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "",
 } as const;
 
+export const featureFlags = {
+  featuredProject: false,
+} as const;
+
 export const legalConfig = {
   legalName: "",
   taxId: "",
