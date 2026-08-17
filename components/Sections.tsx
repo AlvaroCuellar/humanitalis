@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import type { Dictionary } from "@/content/dictionaries";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, type Lang } from "@/lib/config";
 
 function SectionHeading({ eyebrow, title, intro, inverse = false }: { eyebrow: string; title: string; intro?: string; inverse?: boolean }) {
   return <div className={`section-heading ${inverse ? "inverse" : ""}`}><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{intro && <p>{intro}</p>}</div>;
@@ -117,12 +118,10 @@ export function Principles({ dictionary: d }: { dictionary: Dictionary }) {
   );
 }
 
-export function ContactCTA({ dictionary: d }: { dictionary: Dictionary }) {
-  const href = siteConfig.contactEmail ? `mailto:${siteConfig.contactEmail}` : siteConfig.founderUrl;
-  const label = siteConfig.contactEmail ? d.contact.emailAction : d.contact.fallbackAction;
+export function ContactCTA({ lang, dictionary: d }: { lang: Lang; dictionary: Dictionary }) {
   return (
     <section id="contact" className="contact section-anchor">
-      <div className="container contact-inner"><div><p className="eyebrow">{d.contact.eyebrow}</p><h2>{d.contact.title}</h2></div><div><p>{d.contact.body}</p><a className="button button-light" href={href} target={siteConfig.contactEmail ? undefined : "_blank"} rel={siteConfig.contactEmail ? undefined : "noreferrer"}>{label}<span className="icon-arrow-external" aria-hidden="true" /></a></div></div>
+      <div className="container contact-inner"><div><p className="eyebrow">{d.contact.eyebrow}</p><h2>{d.contact.title}</h2></div><div><p>{d.contact.body}</p><Link className="button button-light" href={`/${lang}/contact`}>{d.contact.action}<span className="icon-arrow-external" aria-hidden="true" /></Link></div></div>
     </section>
   );
 }
