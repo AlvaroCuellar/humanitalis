@@ -2,12 +2,14 @@
 
 import { type MouseEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { Dictionary } from "@/content/dictionaries";
 import { featureFlags, type Lang } from "@/lib/config";
 
 export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -34,6 +36,10 @@ export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
     ["about", nav.about], ["team", nav.team],
   ];
   function returnToTop(event: MouseEvent<HTMLAnchorElement>) {
+    if (pathname !== `/${lang}`) {
+      setOpen(false);
+      return;
+    }
     event.preventDefault();
     setOpen(false);
     window.history.replaceState(null, "", `/${lang}#home`);
@@ -56,11 +62,11 @@ export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
             {links.map(([id, label]) => <Link key={id} href={`/${lang}#${id}`} onClick={() => setOpen(false)}>{label}</Link>)}
           </div>
           <LanguageSwitcher lang={lang} className="mobile-language" onNavigate={() => setOpen(false)} />
-          <Link className="button button-small nav-contact" href={`/${lang}#contact`} onClick={() => setOpen(false)}>{nav.contact}</Link>
+          <Link className="button button-small nav-contact" href={`/${lang}/contact`} onClick={() => setOpen(false)}>{nav.contact}</Link>
         </nav>
         <div className="header-actions">
           <LanguageSwitcher lang={lang} />
-          <Link className="button button-small" href={`/${lang}#contact`}>{nav.contact}</Link>
+          <Link className="button button-small" href={`/${lang}/contact`}>{nav.contact}</Link>
           <button ref={menuButtonRef} type="button" className="menu-toggle" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="main-navigation" aria-label={nav.menu}>
             <span /><span />
           </button>

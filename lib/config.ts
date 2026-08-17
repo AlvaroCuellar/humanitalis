@@ -4,7 +4,6 @@ export const siteConfig = {
   founderUrl: "https://www.alvarocuellar.com/",
   demoUrl: "https://bne-manuscritos-siglo-de-oro.vercel.app/",
   siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "",
 } as const;
 
 export const featureFlags = {
@@ -15,7 +14,6 @@ export const legalConfig = {
   legalName: "",
   taxId: "",
   registeredAddress: "",
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "",
 } as const;
 
 export type Lang = "es" | "en";

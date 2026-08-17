@@ -35,9 +35,11 @@ npm start
 Copia `.env.example` a `.env.local` y configura:
 
 - `NEXT_PUBLIC_SITE_URL`: URL canónica sin barra final. En local puede ser `http://localhost:3000`.
-- `NEXT_PUBLIC_CONTACT_EMAIL`: correo corporativo opcional. Si queda vacío, la llamada a la acción enlaza de forma segura a `https://www.alvarocuellar.com/`.
+- `RESEND_API_KEY`: clave privada de Resend para entregar las solicitudes del formulario. Si falta en desarrollo, el servidor genera una previsualización local sin enviar nada.
+- `CONTACT_RECIPIENT_EMAIL`: buzón privado que recibirá las solicitudes.
+- `CONTACT_FROM_EMAIL`: remitente verificado en Resend, por ejemplo `HUMANITALIS <contacto@dominio.es>`. En pruebas puede omitirse para usar el remitente de incorporación de Resend.
 
-No se necesitan claves privadas, base de datos ni servicios externos.
+El formulario no utiliza base de datos, analítica ni seguimiento. Incluye validación en cliente y servidor, campo trampa y limitación básica de frecuencia. Admite hasta tres documentos adjuntos, con un máximo de 2 MB por archivo y 3 MB en total, para permanecer por debajo del límite de carga de Vercel. La entrega en producción requiere Resend correctamente configurado.
 
 ## Edición de contenido y marca
 
@@ -47,14 +49,14 @@ No se necesitan claves privadas, base de datos ni servicios externos.
 - Los archivos maestros facilitados por el fundador son `humanitalis-logo-exact.svg` y `humanitalis-lockup-exact.svg` en la raíz. Contienen el arte aprobado como imagen incrustada y se conservan intactos. Las copias de publicación de `public/brand/` convierten ese arte directamente en trazados vectoriales reales, sin base64 ni pixelado; no deben redibujarse ni sustituirse por aproximaciones. Las variantes monocromas y el favicon derivan de esos trazados.
 - La imagen original que inspiró el sistema está en `references/humanitalis-brand-reference.png`; no se publica en la web.
 
-## Despliegue futuro en Vercel
+## Despliegue en Vercel
 
-1. Crear un repositorio de GitHub llamado exactamente `humanitalis` y subir este proyecto cuando exista autorización.
-2. Importar el repositorio desde Vercel.
-3. Configurar `NEXT_PUBLIC_SITE_URL` con la URL definitiva y, si existe, `NEXT_PUBLIC_CONTACT_EMAIL`.
-4. Ejecutar un despliegue de producción y verificar canonical, sitemap, enlaces y páginas legales.
+El repositorio está conectado al proyecto `humanitalis` de Vercel. Para cada entorno deben configurarse:
 
-No se ha creado repositorio remoto, hecho push ni realizado despliegue alguno.
+- `NEXT_PUBLIC_SITE_URL` con la URL pública canónica.
+- `RESEND_API_KEY`, `CONTACT_RECIPIENT_EMAIL` y `CONTACT_FROM_EMAIL` para la entrega del formulario.
+
+Después de cada cambio relevante deben verificarse la URL canónica, el sitemap, los enlaces, el formulario y las páginas legales en el despliegue resultante.
 
 ## Pendiente antes de la publicación oficial
 
@@ -63,11 +65,11 @@ Deben facilitarse y revisarse con asesoramiento adecuado:
 - Razón social o nombre legal definitivo.
 - NIF u otro identificador fiscal aplicable.
 - Domicilio fiscal o dirección legal que proceda.
-- Correo corporativo de contacto.
+- Correo corporativo de contacto y dominio remitente verificado en Resend.
 - Redacción legal definitiva y responsable del tratamiento, si corresponde.
 - Dominio público definitivo.
 
-Las páginas legales actuales indican expresamente que esos datos están pendientes. No hay formularios, analítica, píxeles publicitarios ni cookies de marketing.
+Las páginas legales actuales indican expresamente que esos datos están pendientes. El único tratamiento previsto es el formulario de contacto; no hay analítica, píxeles publicitarios ni cookies de marketing.
 
 ## Límites editoriales
 
