@@ -30,6 +30,11 @@ const requestTypeLabels = {
   en: { quote: "Quote request", consulting: "Enquiry or consultancy", research: "Research project", infrastructure: "Digital infrastructure or tool", other: "Other enquiry" },
 } as const;
 
+const briefTypeLabels = {
+  es: "Consulta breve",
+  en: "Brief enquiry",
+} as const;
+
 const serviceLabels = {
   es: { recognition: "Reconocimiento y transcripción documental", structure: "Estructuración e interoperabilidad", analysis: "Análisis computacional", enrichment: "Enriquecimiento de colecciones", edition: "Edición, visor o difusión digital", consulting: "Consultoría e infraestructuras", other: "Otro servicio o planteamiento" },
   en: { recognition: "Document recognition and transcription", structure: "Structure and interoperability", analysis: "Computational analysis", enrichment: "Collection enrichment", edition: "Digital edition, viewer or access", consulting: "Consultancy and infrastructure", other: "Another service or approach" },
@@ -86,6 +91,7 @@ export async function POST(request: Request) {
   if (isRateLimited(clientAddress(request))) return NextResponse.json({ ok: false, code: "rate-limited" }, { status: 429 });
 
   const lang = clean(formData.get("lang"), 2) === "en" ? "en" : "es";
+  const mode = clean(formData.get("mode"), 20) === "detailed" ? "detailed" : "brief";
   const startedAt = Number(clean(formData.get("startedAt"), 20));
   if (!Number.isFinite(startedAt) || Date.now() - startedAt < MIN_COMPLETION_MS || startedAt > Date.now()) {
     return NextResponse.json({ ok: false, code: "invalid-timing" }, { status: 400 });
@@ -110,7 +116,10 @@ export async function POST(request: Request) {
   const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email);
   const privacyAccepted = clean(formData.get("privacy"), 20) === "accepted";
   const requestType = clean(formData.get("requestType"), 30) as keyof typeof requestTypeLabels.es;
-  if (!values.name || !values.organization || !emailIsValid || values.description.length < 250 || !privacyAccepted || !(requestType in requestTypeLabels.es)) {
+  const descriptionIsValid = values.description.length >= (mode === "brief" ? 50 : 250);
+  const organizationIsValid = mode === "brief" || Boolean(values.organization);
+  const requestTypeIsValid = mode === "brief" || requestType in requestTypeLabels.es;
+  if (!values.name || !emailIsValid || !descriptionIsValid || !organizationIsValid || !privacyAccepted || !requestTypeIsValid) {
     return NextResponse.json({ ok: false, code: "validation-failed" }, { status: 400 });
   }
 
@@ -118,7 +127,7 @@ export async function POST(request: Request) {
   const selectedServices = formData.getAll("services")
     .map((value) => typeof value === "string" ? value : "")
     .filter((value): value is keyof typeof serviceLabels.es => allowedServices.includes(value as keyof typeof serviceLabels.es));
-  const typeLabel = requestTypeLabels[lang][requestType];
+  const typeLabel = mode === "brief" ? briefTypeLabels[lang] : requestTypeLabels[lang][requestType];
   const services = selectedServices.map((service) => serviceLabels[lang][service]);
   const attachments = formData.getAll("attachments").filter((value): value is File => value instanceof File && value.size > 0);
   const totalAttachmentBytes = attachments.reduce((total, file) => total + file.size, 0);
@@ -132,17 +141,23 @@ export async function POST(request: Request) {
   if (!attachmentsAreValid) return NextResponse.json({ ok: false, code: "invalid-attachments" }, { status: 400 });
   const attachmentNames = attachments.map((file) => safeFilename(file.name));
   const recipient = process.env.CONTACT_RECIPIENT_EMAIL?.trim();
-  const subjectDetail = values.projectName || values.organization;
+  const subjectDetail = values.projectName || values.organization || values.name;
   const subject = `[HUMANITALIS] ${typeLabel} — ${subjectDetail}`.slice(0, 240);
 
-  const sections = [
+  const contactDetails = [
+    `${lang === "es" ? "Nombre" : "Name"}: ${values.name}`,
+    `${lang === "es" ? "Correo" : "Email"}: ${values.email}`,
+    `${lang === "es" ? "Institución" : "Institution"}: ${values.organization || "—"}`,
+    ...(mode === "detailed" ? [`${lang === "es" ? "Cargo" : "Role"}: ${values.role || "—"}`] : []),
+  ].join("\n");
+
+  const sections: ReadonlyArray<readonly [string, string]> = mode === "brief" ? [
     [lang === "es" ? "TIPO DE CONSULTA" : "ENQUIRY TYPE", typeLabel],
-    [lang === "es" ? "DATOS DE CONTACTO" : "CONTACT DETAILS", [
-      `${lang === "es" ? "Nombre" : "Name"}: ${values.name}`,
-      `${lang === "es" ? "Correo" : "Email"}: ${values.email}`,
-      `${lang === "es" ? "Institución" : "Institution"}: ${values.organization}`,
-      `${lang === "es" ? "Cargo" : "Role"}: ${values.role || "—"}`,
-    ].join("\n")],
+    [lang === "es" ? "DATOS DE CONTACTO" : "CONTACT DETAILS", contactDetails],
+    [lang === "es" ? "CONSULTA" : "ENQUIRY", values.description],
+  ] : [
+    [lang === "es" ? "TIPO DE CONSULTA" : "ENQUIRY TYPE", typeLabel],
+    [lang === "es" ? "DATOS DE CONTACTO" : "CONTACT DETAILS", contactDetails],
     [lang === "es" ? "PROYECTO" : "PROJECT", [
       `${lang === "es" ? "Nombre provisional" : "Working title"}: ${values.projectName || "—"}`,
       `${lang === "es" ? "Servicios" : "Services"}: ${services.join(", ") || "—"}`,
@@ -156,7 +171,7 @@ export async function POST(request: Request) {
     [lang === "es" ? "PRESUPUESTO O FINANCIACIÓN" : "BUDGET OR FUNDING", values.budget || "—"],
     [lang === "es" ? "ENLACES" : "LINKS", values.links || "—"],
     [lang === "es" ? "DOCUMENTOS ADJUNTOS" : "ATTACHED DOCUMENTS", attachmentNames.join("\n") || "—"],
-  ] as const;
+  ];
 
   const text = sections.map(([heading, body]) => `${heading}\n${body}`).join("\n\n");
   const html = `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#171817">${sections.map(([heading, body]) => `<h2 style="margin:28px 0 8px;color:#681821;font-size:15px;letter-spacing:.06em">${escapeHtml(heading)}</h2><div>${htmlValue(body)}</div>`).join("")}</div>`;
