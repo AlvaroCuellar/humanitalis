@@ -1,6 +1,6 @@
 # HUMANITALIS
 
-Web corporativa bilingüe de HUMANITALIS: inteligencia artificial para el patrimonio cultural. Presenta capacidades de reconocimiento documental, estructuración, análisis computacional, enriquecimiento de colecciones, edición digital y consultoría técnica.
+Web corporativa bilingüe de HUMANITALIS: inteligencia artificial para recuperar, estudiar y conservar el patrimonio cultural. Presenta capacidades de reconocimiento documental, estructuración, análisis computacional, enriquecimiento de colecciones, edición digital y consultoría técnica.
 
 ## Tecnología
 

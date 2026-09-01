@@ -156,8 +156,8 @@ export function ContactForm({ lang, dictionary: d }: { lang: Lang; dictionary: D
               <input name="email" type="email" autoComplete="email" required maxLength={254} />
             </label>
             <label className={fieldClass}>
-              {fieldLabel(d.fields.organization, mode === "detailed")}
-              <input name="organization" type="text" autoComplete="organization" required={mode === "detailed"} maxLength={180} />
+              {fieldLabel(d.fields.organization)}
+              <input name="organization" type="text" autoComplete="organization" placeholder={d.placeholders.organization} maxLength={180} />
             </label>
             {mode === "detailed" && <label className={fieldClass}>
               {fieldLabel(d.fields.role)}

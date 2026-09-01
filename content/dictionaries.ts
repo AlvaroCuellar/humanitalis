@@ -1,9 +1,9 @@
 export const dictionaries = {
   es: {
     locale: "es_ES",
-    descriptor: "Inteligencia artificial para el patrimonio cultural",
+    descriptor: "Inteligencia artificial para recuperar, estudiar y conservar el patrimonio cultural",
     meta: {
-      title: "HUMANITALIS — Inteligencia artificial para el patrimonio cultural",
+      title: "HUMANITALIS — Inteligencia artificial para recuperar, estudiar y conservar el patrimonio cultural",
       description: "Investigación humanística, inteligencia artificial e infraestructuras digitales para archivos, bibliotecas, museos y colecciones históricas.",
     },
     nav: { home: "Inicio", capabilities: "Capacidades", methodology: "Metodología", project: "Proyecto", about: "Humanitalis", team: "Equipo", contact: "Contacto", menu: "Abrir navegación", close: "Cerrar navegación" },
@@ -128,6 +128,7 @@ export const dictionaries = {
         attachments: "Documentos adjuntos",
       },
       placeholders: {
+        organization: "Opcional",
         role: "Opcional",
         projectName: "Opcional",
         description: "Describa pormenorizadamente el proyecto: qué problema desea resolver, qué materiales están implicados, cuál es su estado actual, qué trabajo imagina y qué resultado espera obtener.",
@@ -185,9 +186,9 @@ export const dictionaries = {
   },
   en: {
     locale: "en_GB",
-    descriptor: "Artificial Intelligence for Cultural Heritage",
+    descriptor: "Artificial intelligence to recover, study and preserve cultural heritage",
     meta: {
-      title: "HUMANITALIS — Artificial Intelligence for Cultural Heritage",
+      title: "HUMANITALIS — Artificial intelligence to recover, study and preserve cultural heritage",
       description: "Humanities research, artificial intelligence and digital infrastructure for archives, libraries, museums and historical collections.",
     },
     nav: { home: "Home", capabilities: "Capabilities", methodology: "Methodology", project: "Project", about: "Humanitalis", team: "Team", contact: "Contact", menu: "Open navigation", close: "Close navigation" },
@@ -297,7 +298,7 @@ export const dictionaries = {
         name: "Full name", email: "Email address", organization: "Institution or organisation", role: "Role or position", requestType: "Type of enquiry", projectName: "Working project title", services: "Services of interest", description: "What do you want to achieve?", materials: "Materials or collections involved", volume: "Approximate volume", currentState: "Current state and available formats", deliverables: "Expected outcomes or deliverables", timing: "Timescale, call or target date", budget: "Budget framework or funding", links: "Links to documentation or samples", attachments: "Attached documents",
       },
       placeholders: {
-        role: "Optional", projectName: "Optional", description: "Describe the project in detail: the problem you want to solve, the materials involved, their current state, the work you envisage and the outcome you expect.", materials: "Document types, dates, languages, physical or documentary features…", volume: "Approximate number of pages, images, documents or records…", currentState: "Existing digitisation, image quality, metadata, transcriptions or formats…", deliverables: "Structured data, transcriptions, viewer, analysis, report, infrastructure…", timing: "Indicate any deadline or associated funding call.", budget: "Optional. You may include limits, an available range or funding route.", links: "Optional. One link per line.",
+        organization: "Optional", role: "Optional", projectName: "Optional", description: "Describe the project in detail: the problem you want to solve, the materials involved, their current state, the work you envisage and the outcome you expect.", materials: "Document types, dates, languages, physical or documentary features…", volume: "Approximate number of pages, images, documents or records…", currentState: "Existing digitisation, image quality, metadata, transcriptions or formats…", deliverables: "Structured data, transcriptions, viewer, analysis, report, infrastructure…", timing: "Indicate any deadline or associated funding call.", budget: "Optional. You may include limits, an available range or funding route.", links: "Optional. One link per line.",
       },
       attachmentsHelp: "Optional. Up to 3 files and 3 MB in total. PDF, Word, Excel, OpenDocument, text, CSV, JPG or PNG. Use the links field for larger files.",
       attachmentsSelected: "files selected",

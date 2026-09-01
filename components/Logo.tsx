@@ -10,7 +10,7 @@ export function Logo({ variant = "lockup", inverse = false, lang = "es", classNa
     <Image
       className={className}
       src={src}
-      alt={variant === "mark" ? "HUMANITALIS" : `HUMANITALIS — ${lang === "es" ? "Inteligencia artificial para el patrimonio cultural" : "Artificial Intelligence for Cultural Heritage"}`}
+      alt={variant === "mark" ? "HUMANITALIS" : `HUMANITALIS — ${lang === "es" ? "Inteligencia artificial para recuperar, estudiar y conservar el patrimonio cultural" : "Artificial intelligence to recover, study and preserve cultural heritage"}`}
       width={variant === "mark" ? 55 : 284}
       height={variant === "mark" ? 58 : 63}
       priority

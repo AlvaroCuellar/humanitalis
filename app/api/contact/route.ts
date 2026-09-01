@@ -117,9 +117,8 @@ export async function POST(request: Request) {
   const privacyAccepted = clean(formData.get("privacy"), 20) === "accepted";
   const requestType = clean(formData.get("requestType"), 30) as keyof typeof requestTypeLabels.es;
   const descriptionIsValid = values.description.length >= (mode === "brief" ? 50 : 250);
-  const organizationIsValid = mode === "brief" || Boolean(values.organization);
   const requestTypeIsValid = mode === "brief" || requestType in requestTypeLabels.es;
-  if (!values.name || !emailIsValid || !descriptionIsValid || !organizationIsValid || !privacyAccepted || !requestTypeIsValid) {
+  if (!values.name || !emailIsValid || !descriptionIsValid || !privacyAccepted || !requestTypeIsValid) {
     return NextResponse.json({ ok: false, code: "validation-failed" }, { status: 400 });
   }
 
