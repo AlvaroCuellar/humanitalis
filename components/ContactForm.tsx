@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { ArrowIcon } from "@/components/ArrowIcon";
 import type { Dictionary } from "@/content/dictionaries";
 import type { Lang } from "@/lib/config";
 
@@ -301,7 +302,7 @@ export function ContactForm({ lang, dictionary: d }: { lang: Lang; dictionary: D
           <div className="contact-submit-row">
             <button className="button button-light" type="submit" disabled={submissionState === "sending"}>
               {submissionState === "sending" ? d.sending : mode === "brief" ? d.brief.submit : d.submit}
-              <span className="icon-arrow-external" aria-hidden="true" />
+              <ArrowIcon direction="external" />
             </button>
             <div className={`contact-form-status ${submissionState}`} role="status" aria-live="polite">{statusMessage}</div>
           </div>

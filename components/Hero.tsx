@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowIcon } from "@/components/ArrowIcon";
 import { DocumentProcessVisual } from "@/components/DocumentProcessVisual";
 import type { Dictionary } from "@/content/dictionaries";
 import { featureFlags, siteConfig, type Lang } from "@/lib/config";
@@ -12,10 +13,10 @@ export function Hero({ lang, dictionary: d }: { lang: Lang; dictionary: Dictiona
           <h1>{d.hero.title}</h1>
           <p className="hero-intro">{d.hero.body}</p>
           <div className="hero-actions">
-            <Link className="button hero-quote" href={`/${lang}/contact`}>{d.contact.emailAction}<span className="icon-arrow-external" aria-hidden="true" /></Link>
+            <Link className="button hero-quote" href={`/${lang}/contact`}>{d.contact.emailAction}<ArrowIcon direction="external" /></Link>
             <div className="hero-secondary-actions">
-              <Link className="text-link" href={`/${lang}#capabilities`}>{d.hero.primary}<span className="icon-arrow-down" aria-hidden="true" /></Link>
-              {featureFlags.featuredProject && <a className="text-link" href={siteConfig.demoUrl} target="_blank" rel="noreferrer">{d.hero.secondary}<span className="icon-arrow-external" aria-hidden="true" /></a>}
+              <Link className="text-link" href={`/${lang}#capabilities`}>{d.hero.primary}<ArrowIcon direction="down" /></Link>
+              {featureFlags.featuredProject && <a className="text-link" href={siteConfig.demoUrl} target="_blank" rel="noreferrer">{d.hero.secondary}<ArrowIcon direction="external" /></a>}
             </div>
           </div>
         </div>

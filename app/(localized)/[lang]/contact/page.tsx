@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowIcon } from "@/components/ArrowIcon";
 import { notFound } from "next/navigation";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
@@ -39,7 +40,7 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
               <p className="eyebrow">{d.contactPage.eyebrow}</p>
               <h1>{d.contactPage.title}</h1>
               <p>{d.contactPage.intro}</p>
-              <Link className="text-link" href={`/${lang}`}><span className="icon-arrow-back" aria-hidden="true" />{d.contactPage.back}</Link>
+              <Link className="text-link" href={`/${lang}`}><ArrowIcon direction="back" />{d.contactPage.back}</Link>
             </div>
             <aside>
               <span aria-hidden="true">H / 01</span>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowIcon } from "@/components/ArrowIcon";
 import { Logo } from "@/components/Logo";
 import type { Dictionary } from "@/content/dictionaries";
 import { siteConfig, type Lang } from "@/lib/config";
@@ -33,7 +34,7 @@ export function Methodology({ dictionary: d }: { dictionary: Dictionary }) {
           <p>{d.methodology.body}</p>
         </div>
         <ol className="method-steps">
-          {d.methodology.steps.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < d.methodology.steps.length - 1 && <i className="icon-arrow-flow" aria-hidden="true" />}</li>)}
+          {d.methodology.steps.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < d.methodology.steps.length - 1 && <ArrowIcon direction="forward" className="icon-arrow-flow" />}</li>)}
         </ol>
         <ul className="method-values">{d.methodology.values.map((value) => <li key={value}>{value}</li>)}</ul>
       </div>
@@ -65,7 +66,7 @@ export function FeaturedProject({ dictionary: d }: { dictionary: Dictionary }) {
           <SectionHeading eyebrow={d.project.eyebrow} title={d.project.title} />
           <p className="project-lead">{d.project.body}</p>
           <ul className="feature-list">{d.project.features.map((feature) => <li key={feature}><span className="icon-plus" aria-hidden="true" />{feature}</li>)}</ul>
-          <a className="button" href={siteConfig.demoUrl} target="_blank" rel="noreferrer">{d.project.action}<span className="icon-arrow-external" aria-hidden="true" /></a>
+          <a className="button" href={siteConfig.demoUrl} target="_blank" rel="noreferrer">{d.project.action}<ArrowIcon direction="external" /></a>
           <p className="project-note">{d.project.note}</p>
         </div>
         <ViewerMockup label={d.project.preview} />
@@ -79,7 +80,7 @@ export function About({ dictionary: d }: { dictionary: Dictionary }) {
     <section id="about" className="section about section-anchor">
       <div className="container about-grid">
         <div className="about-mark" aria-hidden="true"><Logo variant="mark" /><span>H</span></div>
-        <div className="about-copy"><SectionHeading eyebrow={d.about.eyebrow} title={d.about.title} /><p className="about-lead">{d.about.body}</p><div className="founder-note"><i /><p>{d.about.founder}<br /><a className="text-link" href={siteConfig.founderUrl} target="_blank" rel="noreferrer">{d.about.action}<span className="icon-arrow-external" aria-hidden="true" /></a></p></div></div>
+        <div className="about-copy"><SectionHeading eyebrow={d.about.eyebrow} title={d.about.title} /><p className="about-lead">{d.about.body}</p><div className="founder-note"><i /><p>{d.about.founder}<br /><a className="text-link" href={siteConfig.founderUrl} target="_blank" rel="noreferrer">{d.about.action}<ArrowIcon direction="external" /></a></p></div></div>
       </div>
     </section>
   );
@@ -100,7 +101,7 @@ export function Team({ dictionary: d }: { dictionary: Dictionary }) {
             <h3>{d.team.name}</h3>
             <p className="team-role">{d.team.role}</p>
             <p>{d.team.bio}</p>
-            <a className="text-link" href={siteConfig.founderUrl} target="_blank" rel="noreferrer">{d.team.action}<span className="icon-arrow-external" aria-hidden="true" /></a>
+            <a className="text-link" href={siteConfig.founderUrl} target="_blank" rel="noreferrer">{d.team.action}<ArrowIcon direction="external" /></a>
           </div>
         </article>
       </div>
@@ -121,7 +122,7 @@ export function Principles({ dictionary: d }: { dictionary: Dictionary }) {
 export function ContactCTA({ lang, dictionary: d }: { lang: Lang; dictionary: Dictionary }) {
   return (
     <section id="contact" className="contact section-anchor">
-      <div className="container contact-inner"><div><p className="eyebrow">{d.contact.eyebrow}</p><h2>{d.contact.title}</h2></div><div><p>{d.contact.body}</p><Link className="button button-light" href={`/${lang}/contact`}>{d.contact.action}<span className="icon-arrow-external" aria-hidden="true" /></Link></div></div>
+      <div className="container contact-inner"><div><p className="eyebrow">{d.contact.eyebrow}</p><h2>{d.contact.title}</h2></div><div><p>{d.contact.body}</p><Link className="button button-light" href={`/${lang}/contact`}>{d.contact.action}<ArrowIcon direction="external" /></Link></div></div>
     </section>
   );
 }
