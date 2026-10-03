@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { Dictionary } from "@/content/dictionaries";
-import { featureFlags, type Lang } from "@/lib/config";
+import { type Lang } from "@/lib/config";
 
 export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function Header({ lang, nav }: { lang: Lang; nav: Dictionary["nav"] }) {
   }, [open]);
   const links = [
     ["capabilities", nav.capabilities], ["methodology", nav.methodology],
-    ...(featureFlags.featuredProject ? [["project", nav.project]] : []),
+    ["works", nav.works],
     ["about", nav.about], ["team", nav.team],
   ];
   function returnToTop(event: MouseEvent<HTMLAnchorElement>) {

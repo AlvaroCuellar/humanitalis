@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/ArrowIcon";
 import { Logo } from "@/components/Logo";
@@ -75,6 +76,28 @@ export function FeaturedProject({ dictionary: d }: { dictionary: Dictionary }) {
   );
 }
 
+export function Works({ dictionary: d }: { dictionary: Dictionary }) {
+  return (
+    <section id="works" className="section works section-anchor">
+      <div className="container">
+        <SectionHeading eyebrow={d.works.eyebrow} title={d.works.title} intro={d.works.intro} />
+        <div className="works-grid">
+          {d.works.items.map((work, index) => (
+            <article className="work-card" key={work.title}>
+              <div className="work-image"><Image src={work.image} alt={work.imageAlt} width={1080} height={720} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw" /></div>
+              <div className="work-meta"><span>{String(index + 1).padStart(2, "0")}</span><p>{work.category}</p></div>
+              <h3>{work.title}</h3>
+              <p className="work-description">{work.body}</p>
+              {"note" in work && <p className="work-note">{work.note}</p>}
+              <a className="text-link" href={work.url} target="_blank" rel="noreferrer" aria-label={`${d.works.action}: ${work.title}`}>{d.works.action}<ArrowIcon direction="external" /></a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function About({ dictionary: d }: { dictionary: Dictionary }) {
   return (
     <section id="about" className="section about section-anchor">
@@ -92,18 +115,22 @@ export function Team({ dictionary: d }: { dictionary: Dictionary }) {
       <div className="container team-grid">
         <div className="team-intro">
           <SectionHeading eyebrow={d.team.eyebrow} title={d.team.title} />
-          <p>{d.team.intro}</p>
         </div>
-        <article className="team-profile">
-          <div className="team-monogram" aria-hidden="true"><span>AC</span><i /><i /></div>
-          <div className="team-profile-copy">
-            <span className="team-status">{d.team.status} · 01</span>
-            <h3>{d.team.name}</h3>
-            <p className="team-role">{d.team.role}</p>
-            <p>{d.team.bio}</p>
-            <a className="text-link" href={siteConfig.founderUrl} target="_blank" rel="noreferrer">{d.team.action}<ArrowIcon direction="external" /></a>
-          </div>
-        </article>
+        <div className="team-profiles">
+          {[{ name: d.team.name, role: d.team.role, bio: d.team.bio, image: "/team/alvaro-cuellar.png", url: siteConfig.founderUrl }, ...d.team.collaborators].map((person, index) => (
+            <article className={`team-profile ${index === 0 ? "team-founder" : "team-collaborator"}`} key={person.name}>
+              <div className="team-portrait"><Image src={person.image} alt={person.name} width={600} height={750} sizes="(max-width: 700px) 90vw, (max-width: 1050px) 45vw, 30vw" /></div>
+              <div className="team-profile-copy">
+                <span className="team-status">{index === 0 ? d.team.status : person.role}</span>
+                <h3>{person.name}</h3>
+                <p className="team-role">{person.role}</p>
+                <p>{person.bio}</p>
+                <a className="text-link" href={person.url} target="_blank" rel="noreferrer">{d.team.action}<ArrowIcon direction="external" /></a>
+              </div>
+            </article>
+          ))}
+          <p className="team-collaborators-label">{d.team.collaboratorsLabel}</p>
+        </div>
       </div>
     </section>
   );

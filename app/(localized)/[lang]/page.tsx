@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { About, Capabilities, ContactCTA, FeaturedProject, Methodology, Principles, Team } from "@/components/Sections";
+import { About, Capabilities, ContactCTA, FeaturedProject, Methodology, Principles, Team, Works } from "@/components/Sections";
 import { Footer } from "@/components/Footer";
 import { dictionaries } from "@/content/dictionaries";
 import { featureFlags, isLang, siteConfig, type Lang } from "@/lib/config";
@@ -61,5 +61,5 @@ export default async function LanguageHome({ params }: { params: Promise<{ lang:
       },
     ],
   };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} /><Header lang={lang} nav={d.nav} /><main><Hero lang={lang} dictionary={d} /><Capabilities dictionary={d} /><Methodology dictionary={d} />{featureFlags.featuredProject && <FeaturedProject dictionary={d} />}<About dictionary={d} /><Team dictionary={d} /><Principles dictionary={d} /><ContactCTA lang={lang} dictionary={d} /></main><Footer lang={lang} dictionary={d} /></>;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} /><Header lang={lang} nav={d.nav} /><main><Hero lang={lang} dictionary={d} /><Capabilities dictionary={d} /><Methodology dictionary={d} />{featureFlags.featuredProject && <FeaturedProject dictionary={d} />}<Works dictionary={d} /><About dictionary={d} /><Team dictionary={d} /><Principles dictionary={d} /><ContactCTA lang={lang} dictionary={d} /></main><Footer lang={lang} dictionary={d} /></>;
 }
